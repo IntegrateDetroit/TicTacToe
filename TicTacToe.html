@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tic-Tac-Toe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Play Tic-Tac-Toe against the computer." />
+<style type="text/css"><!--
+
+  h1 { font-family: Palatino, serif; font-size: 36pt }
+  table { width: 96%; border-collapse: collapse }
+  td { width: 32%; border: 25px solid black; font-size: 120pt; font-family: sans-serif; text-align: center }
+  td#cell1 { border-left: none; border-top: none }
+  td#cell2 { border-top: none }
+  td#cell3 { border-top: none; border-right: none }
+  td#cell4 { border-left: none }
+  // td#cell5 { }
+  td#cell6 { border-right: none }
+  td#cell7 { border-left: none; border-bottom: none }
+  td#cell8 { border-bottom: none }
+  td#cell9 { border-bottom: none; border-right: none }
+
+  .tttCell { opacity: 0.0; transition: opacity 1s }
+  .show { opacity: 1.0 }
+
+  @media only screen and (max-width: 360px) {
+    td { font-size: 72pt }
+  }
+
+// --></style>
+<script type="text/javascript"><!--
+
+  var humanPlayerToken = "X";
+  var computerPlayerToken = "O";
+  var ticTacToeArray = [" ", " ", " ",  " ", " ", " ", " ", " ", " "];
+  var ticTacToeCells;
+
+  function checkLine(indexA, indexB, indexC, token) {
+    return (ticTacToeArray[indexA] == token 
+        && ticTacToeArray[indexA] == ticTacToeArray[indexB]
+        && ticTacToeArray[indexB] == ticTacToeArray[indexC])
+  }
+
+  function won(token) {
+    var winFlag = false;
+    var currIndex = 0;
+    while (currIndex < ticTacToeCells.length && !winFlag) {
+      winFlag = checkLine(currIndex, currIndex + 1, currIndex + 2, token);
+      currIndex += 3;
+    }
+    currIndex = 0;
+    while (currIndex < 4 && !winFlag) {
+      winFlag = checkLine(currIndex, currIndex + 3, currIndex + 6, token);
+      currIndex++;
+    }
+    if (!winFlag) {
+      winFlag = checkLine(0, 4, 8, token);
+    }
+    if (!winFlag) {
+      winFlag = checkLine(2, 4, 6, token);
+    }
+    return winFlag
+  }
+
+  function notifyWinner(token) {
+    alert(token + "'s wins the game!")
+  }
+
+  function counterMove() {
+    var availableSquare = false;
+    var currIndex = 0;
+    while (currIndex < ticTacToeCells.length && !availableSquare) {
+      availableSquare = (ticTacToeArray[currIndex] == " ");
+      if (availableSquare) {
+        ticTacToeArray[currIndex] = computerPlayerToken;
+        ticTacToeCells[currIndex].innerText = computerPlayerToken;
+        ticTacToeCells[currIndex].classList.add("show");
+        ticTacToeCells[currIndex].removeEventListener("click", captureSquare);
+      }
+      currIndex++;
+    }
+    if (won(computerPlayerToken)) {
+      notifyWinner(computerPlayerToken)
+    }
+  }
+
+  function captureSquare() {
+    this.innerText = humanPlayerToken;
+    this.classList.add("show");
+    this.removeEventListener("click", captureSquare);
+    var index = parseInt(this.id.substring(4)) - 1;
+    ticTacToeArray[index] = humanPlayerToken;
+    if (won(humanPlayerToken)) {
+      notifyWinner(humanPlayerToken);
+    } else {
+      window.setTimeout(counterMove, 1000)
+    }
+  }
+
+  function gameInit() {
+    ticTacToeCells = document.getElementsByClassName("tttCell");
+    for (var i = 0; i < ticTacToeCells.length; i++) {
+      ticTacToeCells[i].addEventListener("click", captureSquare)
+    }
+  }
+
+// --></script>
+</head>
+<body onload="gameInit();">
+
+<h1>Tic-Tac-Toe</h1>
+
+<table>
+<tr><td id="cell1" class="tttCell">&nbsp;</td><td id="cell2" class="tttCell">&nbsp;</td><td 
+
+id="cell3" class="tttCell">&nbsp;</td></tr>
+<tr><td id="cell4" class="tttCell">&nbsp;</td><td id="cell5" class="tttCell">&nbsp;</td><td 
+
+id="cell6" class="tttCell">&nbsp;</td></tr>
+<tr><td id="cell7" class="tttCell">&nbsp;</td><td id="cell8" class="tttCell">&nbsp;</td><td 
+
+id="cell9" class="tttCell">&nbsp;</td></tr>
+</table>
+
+</body>
+</html>
