@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Play Tic-Tac-Toe against the computer." />
-<style type="text/css"><!--
+<style type="text/css">
 
   h1 { font-family: Palatino, serif; font-size: 36pt }
   table { width: 96%; border-collapse: collapse }
@@ -14,7 +14,7 @@
   td#cell2 { border-top: none }
   td#cell3 { border-top: none; border-right: none }
   td#cell4 { border-left: none }
-  // td#cell5 { }
+  /* td#cell5 { } */
   td#cell6 { border-right: none }
   td#cell7 { border-left: none; border-bottom: none }
   td#cell8 { border-bottom: none }
@@ -27,8 +27,8 @@
     td { font-size: 72pt }
   }
 
-// --></style>
-<script type="text/javascript"><!--
+</style>
+<script type="text/javascript">
 
   var humanPlayerToken = "X";
   var computerPlayerToken = "O";
@@ -91,7 +91,9 @@
     var index = parseInt(this.id.substring(4)) - 1;
     ticTacToeArray[index] = humanPlayerToken;
     if (won(humanPlayerToken)) {
-      notifyWinner(humanPlayerToken);
+      setTimeout(function(){
+        notifyWinner(humanPlayerToken);
+      }, 1500);
     } else {
       window.setTimeout(counterMove, 1000)
     }
