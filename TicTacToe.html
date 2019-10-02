@@ -34,6 +34,7 @@
   var computerPlayerToken = "O";
   var ticTacToeArray = [" ", " ", " ",  " ", " ", " ", " ", " ", " "];
   var ticTacToeCells;
+  var flag = false;
 
   function checkLine(indexA, indexB, indexC, token) {
     return (ticTacToeArray[indexA] == token 
@@ -66,30 +67,129 @@
     alert(token + "'s wins the game!")
   }
 
-  function counterMove() {
-    var availableSquare = false;
-    var currIndex = 0;
-    while (currIndex < ticTacToeCells.length && !availableSquare) {
-      availableSquare = (ticTacToeArray[currIndex] == " ");
-      if (availableSquare) {
-        ticTacToeArray[currIndex] = computerPlayerToken;
-        ticTacToeCells[currIndex].innerText = computerPlayerToken;
-        ticTacToeCells[currIndex].classList.add("show");
-        ticTacToeCells[currIndex].removeEventListener("click", captureSquare);
-      }
-      currIndex++;
-    }
-    if (won(computerPlayerToken)) {
-      notifyWinner(computerPlayerToken)
-    }
+ function checkDraw() {
+     var currIndex = 0;
+     while (currIndex < ticTacToeCells.length) {
+         if (ticTacToeArray[currIndex] == " ") break;
+         currIndex++;
+     }
+     if (currIndex == ticTacToeArray.length)
+         alert("The game was a draw!!");
+ }
+
+ function offmove(square) {
+     return ticTacToeArray[square-1] == computerPlayerToken;
+ }
+
+ function defmove(square) {
+     return ticTacToeArray[square-1] == humanPlayerToken;
+ }
+ 
+ function computerMove(square) {
+     if (flag==true && ticTacToeArray[square-1] == " ") {
+         ticTacToeArray[square-1] = computerPlayerToken;
+         ticTacToeCells[square-1].innerText = computerPlayerToken;
+         ticTacToeCells[square-1].removeEventListener("click", captureSquare)
+         ticTacToeCells[square-1].classList.add("show"); 
+         console.log(flag);
+         flag = false;
+     }
+ }
+
+ function chooseRandom() {
+     var availableSquare = false;
+     var currIndex = 0;
+     while (currIndex < ticTacToeCells.length && !availableSquare) {
+         availableSquare = (ticTacToeArray[currIndex] == " ");
+         if (availableSquare && flag) {
+             ticTacToeArray[currIndex] = computerPlayerToken;
+             ticTacToeCells[currIndex].innerText = computerPlayerToken;
+             ticTacToeCells[currIndex].classList.add("show");
+             ticTacToeCells[currIndex].removeEventListener("click", captureSquare);
+             flag = false;
+         }
+         currIndex++;
+     }
+ }
+
+ function counterMove() {
+     if (offmove(1) && offmove(4)) computerMove(7);
+     if (offmove(2) && offmove(5)) computerMove(8);
+     if (offmove(3) && offmove(6)) computerMove(9);
+     if (offmove(7) && offmove(4)) computerMove(1);
+     if (offmove(8) && offmove(5)) computerMove(2);
+     if (offmove(9) && offmove(6)) computerMove(3);
+     if (offmove(1) && offmove(2)) computerMove(3);
+     if (offmove(4) && offmove(5)) computerMove(6);
+     if (offmove(7) && offmove(8)) computerMove(9);
+     if (offmove(3) && offmove(2)) computerMove(7);
+     if (offmove(6) && offmove(5)) computerMove(1);
+     if (offmove(9) && offmove(8)) computerMove(4);
+     if (offmove(5) && offmove(1)) computerMove(7);
+     if (offmove(5) && offmove(3)) computerMove(9);
+     if (offmove(5) && offmove(7)) computerMove(7);
+     if (offmove(5) && offmove(9)) computerMove(1);
+     if (offmove(1) && offmove(7)) computerMove(4);
+     if (offmove(2) && offmove(8)) computerMove(5);
+     if (offmove(3) && offmove(9)) computerMove(6);
+     if (offmove(1) && offmove(3)) computerMove(2);
+     if (offmove(4) && offmove(6)) computerMove(5);
+     if (offmove(7) && offmove(9)) computerMove(8);
+
+     if (defmove(1) && defmove(7)) computerMove(4);
+     if (defmove(2) && defmove(8)) computerMove(5);
+     if (defmove(3) && defmove(9)) computerMove(6);
+     if (defmove(1) && defmove(3)) computerMove(2);
+     if (defmove(4) && defmove(6)) computerMove(5);
+     if (defmove(7) && defmove(9)) computerMove(8);
+     if (defmove(1) && defmove(4)) computerMove(7);
+     if (defmove(2) && defmove(5)) computerMove(8);
+     if (defmove(3) && defmove(6)) computerMove(9);
+     if (defmove(7) && defmove(4)) computerMove(1);
+     if (defmove(8) && defmove(5)) computerMove(2);
+     if (defmove(9) && defmove(6)) computerMove(3);
+     if (defmove(1) && defmove(2)) computerMove(3);
+     if (defmove(4) && defmove(5)) computerMove(6);
+     if (defmove(7) && defmove(8)) computerMove(9);
+     if (defmove(3) && defmove(2)) computerMove(1);
+     if (defmove(6) && defmove(5)) computerMove(4);
+     if (defmove(9) && defmove(8)) computerMove(7);
+     if (defmove(5) && defmove(1)) computerMove(9);
+     if (defmove(5) && defmove(3)) {
+         if (ticTacToeArray[7] == " ") {
+             computerMove(7);
+         }
+         else if (ticTacToeArray[1] == " "){
+             computerMove(1);
+         }
+     }
+     if (defmove(6) && defmove(7)) computerMove(9);
+     if (defmove(2) && defmove(4)) computerMove(1);
+     if (defmove(2) && defmove(6)) computerMove(3);
+     if (defmove(4) && defmove(8)) computerMove(7);
+     if (defmove(6) && defmove(8)) computerMove(9);
+     if (defmove(5) && defmove(7)) computerMove(3);
+     if (defmove(5) && defmove(9)) computerMove(1);
+     if (defmove(1) || defmove(2) || defmove(3) || defmove(4) || defmove(6) || defmove(7) || defmove(8) || defmove(9)) {
+         computerMove(5);
+     }
+     if (defmove(5)) computerMove(7);
+     if (ticTacToeArray.length != -1) chooseRandom();
+     if (won(computerPlayerToken)) {
+         notifyWinner(computerPlayerToken)
+     }
+     checkDraw();
   }
 
   function captureSquare() {
-    this.innerText = humanPlayerToken;
-    this.classList.add("show");
-    this.removeEventListener("click", captureSquare);
-    var index = parseInt(this.id.substring(4)) - 1;
-    ticTacToeArray[index] = humanPlayerToken;
+      if (flag == false) {
+          this.innerText = humanPlayerToken;
+          this.classList.add("show");
+          this.removeEventListener("click", captureSquare);
+          var index = parseInt(this.id.substring(4)) - 1;
+          ticTacToeArray[index] = humanPlayerToken;
+          flag = true;
+      }
     if (won(humanPlayerToken)) {
       notifyWinner(humanPlayerToken);
     } else {
